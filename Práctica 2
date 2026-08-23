@@ -1,0 +1,51 @@
+from IPython.core.prefilter import PrefilterHandler
+
+#DIAGNOSTICO INICIAL
+import pandas as pd
+#Cargar el dataset que esta guardado en el sistema.
+#df=pd.read_csv("/content/sample_data/planta_industrial.csv")
+df=pd.read_csv("/content/sample_data/practica_2.csv")
+
+print("DIAGNOSTICO INICIAL")
+
+print ("--- DIMENSIONES ORIGINALES---: ")
+print (df.shape)
+
+print ("---ARCHIVO ORIGINAL---")
+print(df)
+
+print ("---TIPOS DE DATOS---")
+print(df.dtypes)
+
+
+#Hago una copia
+df_relleno=df.copy()
+
+
+print("------------------")
+print("AJUSTES")
+
+print(f"Cantidad de duplicados antes: {df_relleno.duplicated().sum()} ")
+display(df_relleno[df_relleno.duplicated()])
+print("---ELIMINO DATOS REPETIDOS--- ")
+df_relleno.drop_duplicates(inplace=True)
+print (df_relleno.shape)
+
+print("--------TODAS LAS FILAS--------")
+print(df_relleno.head(4101))
+
+print("--------RADIOGRAFIA TECNICA--------")
+print(df_relleno.info())
+
+print("--------ESTADISTICAS RAPIDAS--------")
+print(df_relleno.describe())
+
+
+#Ajuste de fechas
+df_relleno['Datetime'] = pd.to_datetime(df_relleno['Datetime'])
+print("nulos por columna:",df_relleno.info())
+
+
+#VERIFICACION FINAL
+print(f"Cantidad de duplicados después: {df_relleno.duplicated().sum()}")
+print(f"Tamaño final del dataset:{df_relleno.shape}")
