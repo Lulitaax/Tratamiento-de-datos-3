@@ -3,7 +3,6 @@ from IPython.core.prefilter import PrefilterHandler
 #DIAGNOSTICO INICIAL
 import pandas as pd
 #Cargar el dataset que esta guardado en el sistema.
-#df=pd.read_csv("/content/sample_data/planta_industrial.csv")
 df=pd.read_csv("/content/sample_data/practica_2.csv")
 
 print("DIAGNOSTICO INICIAL")
@@ -43,7 +42,7 @@ print(df_relleno.describe())
 
 #Ajuste de fechas
 df_relleno['Datetime'] = pd.to_datetime(df_relleno['Datetime'])
-print("nulos por columna:",df_relleno.info())
+print("Nulos por columna:",df_relleno.isnull().sum())
 
 
 #VERIFICACION FINAL
