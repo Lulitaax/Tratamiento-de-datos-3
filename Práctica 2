@@ -1,50 +1,82 @@
 from IPython.core.prefilter import PrefilterHandler
-
-#DIAGNOSTICO INICIAL
+# Area de funciones
 import pandas as pd
-#Cargar el dataset que esta guardado en el sistema.
-df=pd.read_csv("/content/sample_data/practica_2.csv")
 
-print("DIAGNOSTICO INICIAL")
+def eliminar_duplicados(df):
+    print(f"Cantidad de duplicados antes: {df.duplicated().sum()}")
+    df = df.drop_duplicates()
+    print(f"Cantidad de duplicados después: {df.duplicated().sum()}")
+    return df 
+ 
+def ajustar_fecha(df, columna_fecha):
+    df[columna_fecha] = pd.to_datetime(df[columna_fecha])
+    return df
 
-print ("--- DIMENSIONES ORIGINALES---: ")
-print (df.shape)
+def diagnostico(df):
+    print("--- DIMENSIONES DEL DATASET ---")
+    print(df.shape)
 
-print ("---ARCHIVO ORIGINAL---")
-print(df)
+    print("--- TIPOS DE DATOS ---")
+    print(df.dtypes)
 
-print ("---TIPOS DE DATOS---")
-print(df.dtypes)
+def analisis(df):
+    print("--- PRIMERAS 5 FILAS ---")
+    head = df.head(6)
+    print(head)
 
+    print("--- RADIOGRAFIA TECNICA ---")
+    df.info()
 
-#Hago una copia
-df_relleno=df.copy()
+    print("--- ESTADISTICAS DESCRIPTIVAS ---")
+    describir = df.describe()
+    print(describir)
 
-
-print("------------------")
-print("AJUSTES")
-
-print(f"Cantidad de duplicados antes: {df_relleno.duplicated().sum()} ")
-display(df_relleno[df_relleno.duplicated()])
-print("---ELIMINO DATOS REPETIDOS--- ")
-df_relleno.drop_duplicates(inplace=True)
-print (df_relleno.shape)
-
-print("--------TODAS LAS FILAS--------")
-print(df_relleno.head(4101))
-
-print("--------RADIOGRAFIA TECNICA--------")
-print(df_relleno.info())
-
-print("--------ESTADISTICAS RAPIDAS--------")
-print(df_relleno.describe())
+def nulos(df):
+    nulos_df = df.isnull().sum()
+    return nulos_df
 
 
-#Ajuste de fechas
-df_relleno['Datetime'] = pd.to_datetime(df_relleno['Datetime'])
-print("Nulos por columna:",df_relleno.isnull().sum())
+# Importamos el archivo CSV desde el repositorio web (Github)
+df = pd.read_csv("https://raw.githubusercontent.com/Lulitaax/Tratamiento-de-datos-3/refs/heads/main/practica_2.csv")
 
 
-#VERIFICACION FINAL
+# Programa Principal
+
+# Hago una copia
+df_relleno = df.copy()
+
+print("------- DIAGNOSTICO INICIAL ------")
+diagnostico(df_relleno)
+
+
+print("--------- AJUSTES ---------")
+
+print("--- ELIMINO DATOS REPETIDOS ---")
+
+# Eliminar duplicados
+df_relleno = eliminar_duplicados(df_relleno)
+
+print("--------- DF sin duplicados ---------")
+print(df_relleno)
+
+
+# Ajuste de fechas
+df_relleno = ajustar_fecha(df_relleno, "Datetime")
+
+print("--------- Columna Datetime cambiada a tiempo real ---------")
+print(df_relleno)
+
+
+# Analisis de variables
+print("------ EDA ------")
+analisis(df_relleno)
+
+
+# Nulos
+print("Nulos por columna:")
+print(nulos(df_relleno))
+
+
+# VERIFICACION FINAL
 print(f"Cantidad de duplicados después: {df_relleno.duplicated().sum()}")
-print(f"Tamaño final del dataset:{df_relleno.shape}")
+print(f"Tamaño final del dataset: {df_relleno.shape}")
