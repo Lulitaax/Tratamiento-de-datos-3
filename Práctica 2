@@ -1,5 +1,5 @@
-from IPython.core.prefilter import PrefilterHandler
 # Area de funciones
+from IPython.core.prefilter import PrefilterHandler
 import pandas as pd
 
 def eliminar_duplicados(df):
